@@ -23,7 +23,7 @@ namespace messageboard.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("PrimaryId")
+                    b.Property<int>("PersonId")
                         .HasColumnType("int");
 
                     b.HasKey("CurrentUserId");
@@ -33,8 +33,8 @@ namespace messageboard.Migrations
                     b.HasData(
                         new
                         {
-                            CurrentUserId = -1,
-                            PrimaryId = 1
+                            CurrentUserId = 1,
+                            PersonId = 0
                         });
                 });
 

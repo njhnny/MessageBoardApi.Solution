@@ -18,7 +18,7 @@ namespace MessageBoard.Models
     {
       builder.Entity<CurrentUser>()
         .HasData(
-          new CurrentUser { PrimaryId = 1, CurrentUserId = -1 }
+          new CurrentUser { CurrentUserId = 1 , PersonId = 0 }
         );
     }
   }

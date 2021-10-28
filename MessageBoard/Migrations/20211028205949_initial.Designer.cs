@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace messageboard.Migrations
 {
     [DbContext(typeof(MessageBoardContext))]
-    [Migration("20211027212459_person")]
-    partial class person
+    [Migration("20211028205949_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,6 +18,27 @@ namespace messageboard.Migrations
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.0");
+
+            modelBuilder.Entity("MessageBoard.Models.CurrentUser", b =>
+                {
+                    b.Property<int>("CurrentUserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("PersonId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CurrentUserId");
+
+                    b.ToTable("CurrentUser");
+
+                    b.HasData(
+                        new
+                        {
+                            CurrentUserId = 1,
+                            PersonId = 0
+                        });
+                });
 
             modelBuilder.Entity("MessageBoard.Models.Group", b =>
                 {
@@ -61,6 +82,10 @@ namespace messageboard.Migrations
 
                     b.HasKey("MessageId");
 
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("PersonId");
+
                     b.ToTable("Messages");
                 });
 
@@ -78,6 +103,35 @@ namespace messageboard.Migrations
                     b.HasKey("PersonId");
 
                     b.ToTable("Persons");
+                });
+
+            modelBuilder.Entity("MessageBoard.Models.Message", b =>
+                {
+                    b.HasOne("MessageBoard.Models.Group", "Group")
+                        .WithMany("Messages")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MessageBoard.Models.Person", "Person")
+                        .WithMany("Messages")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+
+                    b.Navigation("Person");
+                });
+
+            modelBuilder.Entity("MessageBoard.Models.Group", b =>
+                {
+                    b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("MessageBoard.Models.Person", b =>
+                {
+                    b.Navigation("Messages");
                 });
 #pragma warning restore 612, 618
         }

@@ -18,11 +18,17 @@ namespace MessageBoard.Controllers
       _db = db;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<CurrentUser>>> Get(string name)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<CurrentUser>> GetCurrentUser(int id)
     {
-      var query = _db.CurrentUser.AsQueryable();
-      return await query.ToListAsync();
+      var currentUser = await _db.CurrentUser.FindAsync(id);
+
+      if (currentUser == null)
+      {
+        return NotFound();
+      }
+
+      return currentUser;
     }
 
     [HttpPatch("{id}")]
