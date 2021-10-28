@@ -41,7 +41,7 @@ namespace MessageBoard
           {
             Name = "Nick Hennessy",
             Email = "njhnny@gmail.com",
-            Url = new Uri("https://github.com/njhnny"),
+            Url = new Uri("https://github.com/njhnny/MessageBoardApi.Solution"),
           },
           License = new OpenApiLicense
           {
@@ -49,6 +49,10 @@ namespace MessageBoard
             Url = new Uri("https://example.com/license"),
           }
         });
+        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+        c.IncludeXmlComments(xmlPath);
+        c.EnableAnnotations();
       });
     }
 
@@ -68,6 +72,7 @@ namespace MessageBoard
       {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
         c.RoutePrefix = string.Empty;
+        c.InjectStylesheet("/css/styles.css");
       });
 
       app.UseRouting();
@@ -78,6 +83,8 @@ namespace MessageBoard
       {
         endpoints.MapControllers();
       });
+
+      app.UseStaticFiles();
     }
   }
 }

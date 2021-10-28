@@ -5,9 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using MessageBoard.Models;
 using System.Linq;
 using System;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace MessageBoard.Controllers
 {
+  [Produces("application/json")]
   [Route("api/[controller]")]
   [ApiController]
   public class GroupsController : ControllerBase
@@ -20,7 +22,27 @@ namespace MessageBoard.Controllers
     }
 
     // GET api/groups
+    /// <summary>
+    /// Gets groups.
+    /// </summary>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     GET /Group
+    ///     {
+    ///        "id": 1,
+    ///        "name": "Group1",
+    ///        "messages": []
+    ///     }
+    ///
+    /// </remarks>
+    /// <param name="name"></param>
+    /// <returns>A specific list of groups with that name.</returns>
+    /// <response code="201">Returns the groups</response>
+    /// <response code="400">If the item is null</response>   
     [HttpGet]
+    [ProducesResponseType(201)]
+    [ProducesResponseType(400)]
     public async Task<ActionResult<IEnumerable<Group>>> Get(string name)
     {
       var query = _db.Groups.AsQueryable();

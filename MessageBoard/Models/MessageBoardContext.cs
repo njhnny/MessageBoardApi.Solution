@@ -12,9 +12,5 @@ namespace MessageBoard.Models
     public DbSet<Person> Persons { get; set; }
     public DbSet<Group> Groups { get; set; }
     public DbSet<Message> Messages { get; set; }
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-      optionsBuilder.UseLazyLoadingProxies();
-    }
   }
 }
